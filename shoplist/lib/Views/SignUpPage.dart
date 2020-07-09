@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
-import 'package:shoplist/Views/HomePage.dart';
-import 'package:shoplist/Views/SignUpPage.dart';
+import 'package:shoplist/Views/SignInPage.dart';
 
-class SignInPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   //text field state
   String _email, _password;
@@ -20,18 +19,20 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      backgroundColor: Colors.blue[100],
       appBar: AppBar(
         backgroundColor: Colors.blue[400],
-        title: Text('Sign in to ShopList'),
+        elevation: 0.0,
+        title: Text('Sign up to ShopList'),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Register'),
+            label: Text('Sign in'),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SignUpPage(),
+                  builder: (context) => SignInPage(),
                 ),
               );
             },
@@ -42,9 +43,7 @@ class _SignInPageState extends State<SignInPage> {
         builder: (context, child, model) {
           if (model.isloading)
             return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.green,
-              ),
+              child: CircularProgressIndicator(),
             );
           return Container(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -74,14 +73,19 @@ class _SignInPageState extends State<SignInPage> {
                   RaisedButton(
                     color: Colors.blue[400],
                     child: Text(
-                      'Sign in',
+                      'Criar Conta',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
-                        model.signIn(
-                          email: _email,
+                        Map<String, dynamic> userData = {
+                          // "nome": _nomeCompleto,
+                          "email": _email,
+                          // "cargo": "user",
+                        };
+                        model.signUp(
+                          userData: userData,
                           pass: _password,
                           onSuccess: _onSuccess,
                           onFail: _onFail,
@@ -99,17 +103,13 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void _onSuccess() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => HomePage(),
-      ),
-    );
+    Navigator.of(context).pop();
   }
 
   void _onFail() {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
-        content: Text("Falha ao entrar!"),
+        content: Text("Falha ao criar sua conta!"),
         backgroundColor: Colors.redAccent,
         duration: Duration(seconds: 2),
       ),
