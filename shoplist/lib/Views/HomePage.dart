@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:shoplist/Controllers/auth.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:shoplist/Models/UserModel.dart';
 
 class HomePage extends StatelessWidget {
-  final AuthService _auth = AuthService();
+  // final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue[50],
-        appBar: AppBar(
-          title: Text('Home'),
-          backgroundColor: Colors.blue[400],
-          elevation: 0.0,
-          actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Logout'),
-              onPressed: () async {
-                await _auth.signOut();
-              },
-            )
-          ],
-        ));
+      backgroundColor: Colors.blue[50],
+      appBar: AppBar(
+        title: Text('Home'),
+        backgroundColor: Colors.blue[400],
+      ),
+      body: ScopedModelDescendant<UserModel>(
+        builder: (context, child, model) {
+          if (model.isloading)
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.deepPurple,
+              ),
+            );
+          return Container(
+            child: Text("Hello, this is the main fucking Home Page"),
+          );
+        },
+      ),
+    );
   }
 }
 
