@@ -13,21 +13,19 @@ class _SignUpPageState extends State<SignUpPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   //text field state
-  String _email, _password;
+  String _email, _password, _firstName;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.blue[100],
       appBar: AppBar(
         backgroundColor: Colors.blue[400],
-        elevation: 0.0,
-        title: Text('Sign up to ShopList'),
+        title: Text('Sign Up'),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Sign in'),
+            label: Text('Login'),
             onPressed: () {
               Navigator.push(
                 context,
@@ -53,6 +51,16 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: <Widget>[
                   SizedBox(height: 20.0),
                   TextFormField(
+                    decoration: InputDecoration(labelText: "Digite seu nome"),
+                    validator: (val) =>
+                        val.isEmpty ? 'Digite seu primeiro nome.' : null,
+                    onChanged: (val) {
+                      setState(() => _firstName = val);
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "Digite seu email"),
                     validator: (val) =>
                         val.isEmpty ? 'Digite um email válido.' : null,
                     onChanged: (val) {
@@ -61,6 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   SizedBox(height: 20.0),
                   TextFormField(
+                    decoration: InputDecoration(labelText: "Crie sua senha"),
                     obscureText: true,
                     validator: (val) => val.length < 8
                         ? 'Escolha uma senha com pelo menos 8 caracteres'
@@ -80,9 +89,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                         Map<String, dynamic> userData = {
-                          // "nome": _nomeCompleto,
+                          "nome": _firstName,
                           "email": _email,
-                          // "cargo": "user",
+                          "cargo": "user",
                         };
                         model.signUp(
                           userData: userData,
