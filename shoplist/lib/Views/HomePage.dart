@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
+import 'package:shoplist/Views/SearchItemPage.dart';
 
 class HomePage extends StatelessWidget {
   // final AuthService _auth = AuthService();
@@ -21,27 +22,24 @@ class HomePage extends StatelessWidget {
                 backgroundColor: Colors.deepPurple,
               ),
             );
-          return Container(
-            child: Text("Hello, this is the main fucking Home Page"),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Text("Uma homepage foda!".toUpperCase()),
+              RaisedButton(
+                child: Text("Buscador de item"),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchItemPage(),
+                  ),
+                ),
+              )
+            ],
           );
         },
       ),
     );
   }
 }
-
-/*class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final AuthService _auth = AuthService();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-    );
-  }
-}*/

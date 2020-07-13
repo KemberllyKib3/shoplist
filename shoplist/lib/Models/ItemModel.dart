@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:scoped_model/scoped_model.dart';
 
 class ItemModel extends Model {
+  Firestore firestoreProvider;
+
   bool isloading = false;
 
   Map<String, dynamic> itemData = Map();
@@ -26,16 +29,7 @@ class ItemModel extends Model {
   }
 
   // PROCURA ITENS
-  Future<void> searchItens(String nome) async {
-    List<DocumentSnapshot> documentList = (await Firestore.instance
-            .collection("itens")
-            // .document(await firestoreProvider getUid())
-            .document()
-            .collection("nomeItem")
-            .where("nomeItem", arrayContains: nome)
-            .getDocuments())
-        .documents;
-  }
+  Future<void> searchItens(String nome) async {}
 
   setSearchParam(String nome) {
     List<String> nomeSearchList = List();
@@ -46,6 +40,8 @@ class ItemModel extends Model {
     }
     return nomeSearchList;
   }
+
+  // {"searchItens": setSearchParam(_nomePesquisa),}
 
   // ATUALIZA O ITEM SE FOR FEITA ALGUMA ALTERAÇÃO
   void updateItem() {
