@@ -11,11 +11,12 @@ class ItemModel extends Model {
 
   // CRIAR UM NOVO ITEM
   void createItem(Map<String, dynamic> itemData) {
-    if (existeItem(itemData["nomeItem"])) {
-      updateItem();
-    } else {
-      Firestore.instance.collection("itens").add(itemData);
-    }
+    // if (existeItem(itemData["nomeItem"])) {
+    //   updateItem();
+    // } else {
+    //   Firestore.instance.collection("itens").add(itemData);
+    // }
+    Firestore.instance.collection("itens").add(itemData);
     notifyListeners();
   }
 
@@ -28,20 +29,21 @@ class ItemModel extends Model {
     return false;
   }
 
-  // PROCURA ITENS
-  Future<void> searchItens(String nome) async {}
-
   setSearchParam(String nome) {
-    List<String> nomeSearchList = List();
-    String temp = "";
-    for (int i = 0; i < nome.length; i++) {
-      temp = temp + nome[i];
-      nomeSearchList.add(temp);
+    List<String> splitList = nome.split(" ");
+    List<String> indexList = [];
+
+    for (int i = 0; i < splitList.length; i++) {
+      for (int j = 1; j < splitList[i].length + 1; j++) {
+        indexList.add(splitList[i].substring(0, j).toLowerCase());
+      }
     }
-    return nomeSearchList;
+    print(indexList);
+
+    return indexList;
   }
 
-  // {"searchItens": setSearchParam(_nomePesquisa),}
+  
 
   // ATUALIZA O ITEM SE FOR FEITA ALGUMA ALTERAÇÃO
   void updateItem() {

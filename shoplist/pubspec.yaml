@@ -27,6 +27,7 @@ dependencies:
   cloud_firestore: ^0.12.9+4
   provider: ^3.1.0
   scoped_model: ^1.0.1
+  dropdown_formfield: ^0.1.2
 
 dev_dependencies:
   flutter_test:

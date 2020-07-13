@@ -39,7 +39,7 @@ class _SignInPageState extends State<SignInPage> {
                       Icon(
                         Icons.store,
                         size: 100,
-                        color: Colors.deepPurple,
+                        color: Theme.of(context).primaryColor,
                       )
                     ],
                   ),
