@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
                   debugShowCheckedModeBanner: false,
                   theme: ThemeData(
                     // primaryColor: Color.fromRGBO(133, 0, 249, 1),
-                    primaryColor: Colors.deepOrange,
+                    primaryColor: Colors.deepPurple,
                     accentColor: Color.fromRGBO(174, 58, 255, 1),
                   ),
                   home: SignInPage(),
