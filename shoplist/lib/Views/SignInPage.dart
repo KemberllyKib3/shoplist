@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
 import 'package:shoplist/Views/HomePage.dart';
+import 'package:shoplist/Views/HomePage1.dart';
+import 'package:shoplist/Views/RecoverPassPage.dart';
 import 'package:shoplist/Views/SignUpPage.dart';
 
 class SignInPage extends StatefulWidget {
@@ -154,7 +156,13 @@ class _SignInPageState extends State<SignInPage> {
                                 alignment: Alignment.centerRight,
                                 child: FlatButton(
                                   padding: EdgeInsets.all(0),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => RecoverPassPage(),
+                                      ),
+                                    );
+                                  },
                                   child: Text(
                                     "Esqueci minha senha",
                                     style: TextStyle(
@@ -288,7 +296,7 @@ class _SignInPageState extends State<SignInPage> {
   void _onSuccess() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => HomePage(),
+        builder: (context) => HomePage1(),
       ),
     );
   }

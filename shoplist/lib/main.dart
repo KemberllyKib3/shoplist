@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/ItemModel.dart';
+import 'package:shoplist/Models/ListModel.dart';
 import 'package:shoplist/Models/UserModel.dart';
 import 'package:shoplist/Views/SignInPage.dart';
 
@@ -17,16 +18,19 @@ class MyApp extends StatelessWidget {
             model: ItemModel(),
             child: ScopedModelDescendant<ItemModel>(
               builder: (context, child, model2) {
-                return MaterialApp(
-                  title: "ShopList",
-                  debugShowCheckedModeBanner: false,
-                  theme: ThemeData(
-                    // primaryColor: Color.fromRGBO(133, 0, 249, 1),
-                    primaryColor: Colors.deepPurple,
-                    accentColor: Color.fromRGBO(174, 58, 255, 1),
+                return ScopedModel<ListModel>(
+                  model: ListModel(model1, model2),
+                  child: MaterialApp(
+                    title: "ShopList",
+                    debugShowCheckedModeBanner: false,
+                    theme: ThemeData(
+                      // primaryColor: Color.fromRGBO(133, 0, 249, 1),
+                      primaryColor: Colors.cyan,
+                      accentColor: Colors.black87,
+                    ),
+                    home: SignInPage(),
+                    // home: AdminHome(),
                   ),
-                  home: SignInPage(),
-                  // home: AdminHome(),
                 );
               },
             ),
@@ -34,11 +38,5 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
-
-    /*return MaterialApp(
-      title: 'ShopList',
-      theme: ThemeData(),
-      home: HomePage(),
-    );*/
   }
 }

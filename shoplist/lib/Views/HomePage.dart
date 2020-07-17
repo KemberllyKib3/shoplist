@@ -24,27 +24,60 @@ class HomePage extends StatelessWidget {
               ),
             );
           return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("Uma homepage foda!".toUpperCase()),
-              RaisedButton(
-                child: Text("Buscador de item"),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchItemPage(),
-                  ),
-                ),
+              Text(
+                "Uma homepage top!".toUpperCase(),
+                style: TextStyle(fontSize: 30),
               ),
-              RaisedButton(
-                child: Text("Adicionador de item"),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddItemPage(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text("Buscador de item"),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SearchItemPage(),
+                      ),
+                    ),
                   ),
-                ),
+                  RaisedButton(
+                    child: Text("Criar um item"),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddItemPage(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RaisedButton(
+                      child: Text("Página do Usuário"),
+                      onPressed: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => SearchItemPage(),
+                        //   ),
+                        // );
+                      }),
+                  RaisedButton(
+                    child: Text("Criar Lista"),
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => SearchItemPage(),
+                      //   ),
+                      // );
+                    },
+                  ),
+                ],
               ),
             ],
           );

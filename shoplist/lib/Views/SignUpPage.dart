@@ -183,23 +183,25 @@ class _SignUpPageState extends State<SignUpPage> {
                                   onPressed: () {
                                     if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
-                                      Map <String,dynamic> userData = {
+
+                                      Map<String, dynamic> userData = {
+
                                         "nome": _firstName,
                                         "email": _email,
                                         "cargo": "user",
                                       };
                                       model.signUp(
                                         userData: userData,
-                                         pass: _password,
-                                          onSuccess: _onSuccess,
-                                           onFail: _onFail,
-                                           );
-                                    }
 
+                                        pass: _password,
+                                        onSuccess: _onSuccess,
+                                        onFail: _onFail,
+                                      );
+                                    }
                                   },
                                 ),
                               ),
-                              // E ai consagrado
+
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
