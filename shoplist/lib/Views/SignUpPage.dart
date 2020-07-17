@@ -14,99 +14,279 @@ class _SignUpPageState extends State<SignUpPage> {
 
   //text field state
   String _email, _password, _firstName;
+  bool _visibility = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Colors.blue[400],
-        title: Text('Sign Up'),
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Login'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SignInPage(),
-                ),
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: ScopedModelDescendant<UserModel>(
+          builder: (context, child, model) {
+            if (model.isloading)
+              return Center(
+                child: CircularProgressIndicator(),
               );
-            },
-          )
-        ],
-      ),
-      body: ScopedModelDescendant<UserModel>(
-        builder: (context, child, model) {
-          if (model.isloading)
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Digite seu nome"),
-                    validator: (val) =>
-                        val.isEmpty ? 'Digite seu primeiro nome.' : null,
-                    onChanged: (val) {
-                      setState(() => _firstName = val);
-                    },
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Container(
+                  height: 150,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Icon(
+                        Icons.store,
+                        size: 100,
+                        color: Theme.of(context).primaryColor,
+                      )
+                    ],
                   ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Digite seu email"),
-                    validator: (val) =>
-                        val.isEmpty ? 'Digite um email válido.' : null,
-                    onChanged: (val) {
-                      setState(() => _email = val);
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Crie sua senha"),
-                    obscureText: true,
-                    validator: (val) => val.length < 8
-                        ? 'Escolha uma senha com pelo menos 8 caracteres'
-                        : null,
-                    onChanged: (val) {
-                      setState(() => _password = val);
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  RaisedButton(
-                    color: Colors.blue[400],
-                    child: Text(
-                      'Criar Conta',
-                      style: TextStyle(color: Colors.white),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                    decoration: BoxDecoration(),
+                    child: ListView(
+                      children: <Widget>[
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Text(
+                                "Olá! Cadastre-se para\ncontinuar.",
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 20,
+                                  fontFamily: 'Open Sans',
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.black12,
+                                    hintText: "Nome",
+                                    hintStyle: TextStyle(
+                                      color: Colors.black26,
+                                      fontSize: 20,
+                                      fontFamily: 'Open Sans',
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  // validator: (val) => val.isEmpty
+                                  //     ? 'Digite um nome válido.'
+                                  //     : null,
+
+                                  validator: (val) {
+                                    if (val.isEmpty) {
+                                      return "Este campo não pode ser vazio.";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+
+                                  onChanged: (val) {
+                                    setState(() => _firstName = val);
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.black12,
+                                    hintText: "Email",
+                                    hintStyle: TextStyle(
+                                      color: Colors.black26,
+                                      fontSize: 20,
+                                      fontFamily: 'Open Sans',
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  // validator: (val) => val.isEmpty
+                                  //     ? 'Este campo não pode ser vazio.'
+                                  //     : null,
+
+                                  validator: (val) {
+                                    if (val.isEmpty) {
+                                      return "Este campo não pode ser vazio.";
+                                    }
+                                    if (!val.contains("@")) {
+                                      return "Digite um email válido.";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  onChanged: (val) {
+                                    setState(() => _email = val);
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: TextFormField(
+                                  obscureText: _visibility,
+                                  decoration: InputDecoration(
+                                    suffixIcon: IconButton(
+                                        icon: _visibility
+                                            ? Icon(Icons.visibility_off)
+                                            : Icon(Icons.visibility),
+                                        onPressed: () {
+                                          setState(() {
+                                            _visibility = !_visibility;
+                                          });
+                                        }),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    hintText: "Senha",
+                                    hintStyle: TextStyle(
+                                      color: Colors.black26,
+                                      fontSize: 20,
+                                      fontFamily: 'Open Sans',
+                                    ),
+                                  ),
+                                  validator: (val) => val.length < 8
+                                      ? 'Escolha uma senha com pelo menos 8 caracteres'
+                                      : null,
+                                  onChanged: (val) {
+                                    setState(() => _password = val);
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 10, bottom: 10),
+                                child: MaterialButton(
+                                  elevation: 3,
+                                  color: Theme.of(context).primaryColor,
+                                  child: Text(
+                                    "CADASTRAR",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: 'Open Sans',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  height: 50,
+                                  textColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  onPressed: () {
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      Map<String, dynamic> userData = {
+                                        "nome": _firstName,
+                                        "email": _email,
+                                        "cargo": "user",
+                                      };
+                                      model.signUp(
+                                        userData: userData,
+                                        pass: _password,
+                                        onSuccess: _onSuccess,
+                                        onFail: _onFail,
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Divider(
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  Text(" ou "),
+                                  Expanded(
+                                    child: Divider(
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              // Divider(
+                              //   height: 10,
+                              //   color: Colors.black87,
+                              // ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 15),
+                                child: MaterialButton(
+                                  elevation: 3,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      // Icon(Icons.group_work),
+                                      Text(
+                                        "Cadastrar com google",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'Open Sans',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  height: 50,
+                                  textColor: Colors.black87,
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(color: Colors.black87),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "Já possui conta?",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Open Sans',
+                                    ),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => SignInPage(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      "Faça Login",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Open Sans',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.all(0),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-                        Map<String, dynamic> userData = {
-                          "nome": _firstName,
-                          "email": _email,
-                          "cargo": "user",
-                        };
-                        model.signUp(
-                          userData: userData,
-                          pass: _password,
-                          onSuccess: _onSuccess,
-                          onFail: _onFail,
-                        );
-                      }
-                    },
                   ),
-                ],
-              ),
-            ),
-          );
-        },
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
