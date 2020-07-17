@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
@@ -182,13 +183,16 @@ class _SignUpPageState extends State<SignUpPage> {
                                   onPressed: () {
                                     if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
+
                                       Map<String, dynamic> userData = {
+
                                         "nome": _firstName,
                                         "email": _email,
                                         "cargo": "user",
                                       };
                                       model.signUp(
                                         userData: userData,
+
                                         pass: _password,
                                         onSuccess: _onSuccess,
                                         onFail: _onFail,
