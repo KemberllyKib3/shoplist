@@ -7,19 +7,35 @@ import 'package:shoplist/Models/UserModel.dart';
 class ListModel extends Model {
   UserModel user;
   ItemModel itens;
-
   bool isloading = false;
-
   ListModel(this.user, this.itens);
 
   // CRIAR UMA NOVA LISTA
-  void criarLista(
-    Map<String, dynamic> listData,
-    VoidCallback onSuccess,
-    VoidCallback onFail,
-  ) {
+  void criarLista(Map<String, dynamic> listData, dynamic onSuccess(String oi),
+      VoidCallback onFail) async {
     isloading = true;
     notifyListeners();
+    try {
+      Firestore.instance
+          .collection("listas")
+          .add(listData)
+          // ignore: sdk_version_set_literal
+          .then((docRef) => {
+                onSuccess(docRef.documentID.toString()),
+                Firestore.instance
+                    .collection("listas")
+                    .document(docRef.documentID)
+                    .collection("itens")
+                    .buildArguments(),
+              });
+
+      isloading = false;
+      notifyListeners();
+    } catch (e) {
+      onFail();
+      isloading = false;
+      notifyListeners();
+    }
   }
 
   // CARREGAR LISTAS DA NUVEM E SALVAR NO LOCAL

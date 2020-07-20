@@ -57,14 +57,15 @@ class UserModel extends Model {
       @required VoidCallback onFail}) async {
     isloading = true;
     notifyListeners();
-   
+
     try {
       _auth
           .signInWithEmailAndPassword(email: email, password: pass)
           .then((user) async {
         firebaseUser = user.user;
+        print(firebaseUser.uid.toString());
         await _loadCurrentUser();
-        
+
         onSuccess();
         // nome = userData["nome"].toString().split(" ")[0];
         isloading = false;

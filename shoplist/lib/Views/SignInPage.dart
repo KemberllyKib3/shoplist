@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
-import 'package:shoplist/Views/HomePage.dart';
 import 'package:shoplist/Views/HomePage1.dart';
 import 'package:shoplist/Views/RecoverPassPage.dart';
 import 'package:shoplist/Views/SignUpPage.dart';
@@ -293,10 +293,14 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void _onSuccess() {
+  Future<void> _onSuccess() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => HomePage1(),
+        builder: (context) => HomePage1(
+          userID: user.uid.toString(),
+        ),
       ),
     );
   }

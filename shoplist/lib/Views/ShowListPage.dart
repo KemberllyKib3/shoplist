@@ -2,25 +2,44 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/ItemModel.dart';
+import 'package:shoplist/Views/SearchItemPage.dart';
 
-class SearchItemPage extends StatefulWidget {
+class ShowListPage extends StatefulWidget {
+  final String listName;
   final String listID;
-  SearchItemPage({Key key, @required this.listID}) : super(key: key);
+  ShowListPage({Key key, @required this.listName, @required this.listID})
+      : super(key: key);
   @override
-  _SearchItemPageState createState() =>
-      _SearchItemPageState(listID: this.listID);
+  _ShowListPageState createState() =>
+      _ShowListPageState(listName: this.listName, listID: this.listID);
 }
 
-class _SearchItemPageState extends State<SearchItemPage> {
+class _ShowListPageState extends State<ShowListPage> {
+  final String listName;
   final String listID;
-  _SearchItemPageState({@required this.listID});
+  _ShowListPageState({@required this.listName, @required this.listID});
   String searchString = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Buscador"),
+        title: Text(this.listName),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.playlist_add,
+              size: 35,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => SearchItemPage(listID: this.listID),
+                ),
+              );
+            },
+          )
+        ],
       ),
       body: ScopedModelDescendant<ItemModel>(
         builder: (context, child, model) {
@@ -33,7 +52,7 @@ class _SearchItemPageState extends State<SearchItemPage> {
             children: <Widget>[
               TextField(
                 decoration: InputDecoration(
-                  labelText: "Pesquise um item",
+                  labelText: "Pesquise itens na sua lista",
                 ),
                 onChanged: (String value) {
                   setState(() {
@@ -45,8 +64,14 @@ class _SearchItemPageState extends State<SearchItemPage> {
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: (searchString == null || searchString.trim() == "")
-                      ? Firestore.instance.collection("itens").snapshots()
+                      ? Firestore.instance
+                          .collection("listas")
+                          .document(this.listID)
+                          .collection("itens")
+                          .snapshots()
                       : Firestore.instance
+                          .collection("listas")
+                          .document(this.listID)
                           .collection("itens")
                           .where("searchItens", arrayContains: searchString)
                           .snapshots(),
@@ -65,14 +90,8 @@ class _SearchItemPageState extends State<SearchItemPage> {
                             (DocumentSnapshot document) {
                               return ListTile(
                                 title: Text(document["nomeItem"]),
-                                leading: Icon(Icons.add),
-                                onTap: () {
-                                  Firestore.instance
-                                      .collection("listas")
-                                      .document(this.listID)
-                                      .collection("itens")
-                                      .add(document.data);
-                                },
+                                leading: Icon(Icons.check),
+                                onTap: () {},
                               );
                             },
                           ).toList(),
