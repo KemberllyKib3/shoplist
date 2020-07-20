@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/ItemModel.dart';
+import 'package:shoplist/utils/Loading.dart';
 
 class SearchItemPage extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _SearchItemPageState extends State<SearchItemPage> {
         builder: (context, child, model) {
           if (model.isloading)
             return Center(
-              child: CircularProgressIndicator(),
+              child: Loading(),
             );
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
