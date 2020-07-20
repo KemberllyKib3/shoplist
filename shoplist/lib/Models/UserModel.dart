@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:shoplist/Views/SignInPage.dart';
 
 // class User {
 //   final String uid;
@@ -79,11 +80,16 @@ class UserModel extends Model {
   }
 
   // SAIR DA CONTA
-  void signOut() async {
+  void signOut(context) async {
     await _auth.signOut();
     userData = Map();
     firebaseUser = null;
     notifyListeners();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => SignInPage(),
+      ),
+    );
   }
 
   // RECUPERAR A SENHA

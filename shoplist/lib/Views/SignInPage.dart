@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
-import 'package:shoplist/Views/HomePage1.dart';
+import 'package:shoplist/Views/HomePage.dart';
 import 'package:shoplist/Views/RecoverPassPage.dart';
 import 'package:shoplist/Views/SignUpPage.dart';
+import 'package:shoplist/custom_icons_icons.dart';
+import 'package:shoplist/utils/Loading.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -23,26 +25,27 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         key: _scaffoldKey,
+        appBar: AppBar(backgroundColor: Colors.white, elevation: 0),
         body: ScopedModelDescendant<UserModel>(
           builder: (context, child, model) {
             if (model.isloading)
               return Center(
-                child: CircularProgressIndicator(),
+                child: Loading(),
               );
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Container(
-                  height: 150,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Icon(
-                        Icons.store,
+                        CustomIcons.shop,
                         size: 100,
                         color: Theme.of(context).primaryColor,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -62,20 +65,21 @@ class _SignInPageState extends State<SignInPage> {
                                 style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 20,
-                                  fontFamily: 'Open Sans',
+                                  fontFamily: 'Helvetica',
                                 ),
                                 textAlign: TextAlign.center,
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
                                 child: TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
                                     fillColor: Colors.black12,
                                     hintText: "Email",
                                     hintStyle: TextStyle(
                                       color: Colors.black26,
                                       fontSize: 20,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
@@ -110,7 +114,7 @@ class _SignInPageState extends State<SignInPage> {
                                     hintStyle: TextStyle(
                                       color: Colors.black26,
                                       fontSize: 20,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                     ),
                                   ),
                                   validator: (val) => val.length < 8
@@ -130,7 +134,7 @@ class _SignInPageState extends State<SignInPage> {
                                     "ENTRAR",
                                     style: TextStyle(
                                       fontSize: 20,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -167,7 +171,7 @@ class _SignInPageState extends State<SignInPage> {
                                     "Esqueci minha senha",
                                     style: TextStyle(
                                       fontSize: 14,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                     ),
                                   ),
                                 ),
@@ -206,7 +210,7 @@ class _SignInPageState extends State<SignInPage> {
                                         "Entrar com google",
                                         style: TextStyle(
                                           fontSize: 20,
-                                          fontFamily: 'Open Sans',
+                                          fontFamily: 'Helvetica',
                                         ),
                                       ),
                                     ],
@@ -234,7 +238,7 @@ class _SignInPageState extends State<SignInPage> {
                                         "Entrar como visitante",
                                         style: TextStyle(
                                           fontSize: 20,
-                                          fontFamily: 'Open Sans',
+                                          fontFamily: 'Helvetica',
                                         ),
                                       ),
                                     ],
@@ -255,7 +259,7 @@ class _SignInPageState extends State<SignInPage> {
                                     "Novo por aqui?",
                                     style: TextStyle(
                                       fontSize: 14,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                     ),
                                   ),
                                   FlatButton(
@@ -270,7 +274,7 @@ class _SignInPageState extends State<SignInPage> {
                                       "Cadastre-se",
                                       style: TextStyle(
                                         fontSize: 14,
-                                        fontFamily: 'Open Sans',
+                                        fontFamily: 'Helvetica',
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -298,7 +302,7 @@ class _SignInPageState extends State<SignInPage> {
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => HomePage1(
+        builder: (context) => HomePage(
           userID: user.uid.toString(),
         ),
       ),

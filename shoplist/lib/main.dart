@@ -24,9 +24,12 @@ class MyApp extends StatelessWidget {
                     title: "ShopList",
                     debugShowCheckedModeBanner: false,
                     theme: ThemeData(
-                      // primaryColor: Color.fromRGBO(133, 0, 249, 1),
-                      primaryColor: Colors.cyan,
-                      accentColor: Colors.black87,
+                      // primaryColor: Color.fromRGBO(255, 165, 0, 1), // Laranja de Neto
+                      primaryColor:
+                          Color.fromRGBO(133, 0, 249, 1), // Roxo de Kibe
+                      accentColor:
+                          Color.fromRGBO(174, 58, 255, 1), // Lilas de Kibe
+                      cursorColor: Colors.black87,
                     ),
                     home: SignInPage(),
                     // home: AdminHome(),

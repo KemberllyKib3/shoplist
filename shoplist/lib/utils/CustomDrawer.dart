@@ -1,0 +1,155 @@
+import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:shoplist/Models/UserModel.dart';
+import 'package:shoplist/Views/AddItemPage.dart';
+import 'package:shoplist/Views/HomePage.dart';
+import 'package:shoplist/Views/RecipePage.dart';
+import 'package:shoplist/custom_icons_icons.dart';
+
+class CustomDrawer extends StatefulWidget {
+  CustomDrawer({Key key}) : super(key: key);
+
+  @override
+  _CustomDrawerState createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  @override
+  Widget build(BuildContext context) {
+    return ScopedModelDescendant<UserModel>(
+      builder: (context, child, model) {
+        if (model.isloading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      CustomIcons.shop,
+                      size: 80,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        "Bem-vindo(a) ao\nShopList",
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20,
+                            fontFamily: 'Helvetica',
+                            fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                height: 1,
+                color: Theme.of(context).cursorColor,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.home,
+                  color: Theme.of(context).cursorColor,
+                ),
+                title: Text(
+                  "Página Inicial",
+                  style: TextStyle(
+                    color: Theme.of(context).cursorColor,
+                    fontSize: 15,
+                    fontFamily: 'Helvetica',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onLongPress: null,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  // Icons.list,
+                  Icons.format_list_bulleted,
+                  color: Theme.of(context).cursorColor,
+                ),
+                title: Text(
+                  "Receitas",
+                  style: TextStyle(
+                    color: Theme.of(context).cursorColor,
+                    fontSize: 15,
+                    fontFamily: 'Helvetica',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onLongPress: null,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => RecipePage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.add_circle,
+                  color: Theme.of(context).cursorColor,
+                ),
+                title: Text(
+                  "Criar um novo item",
+                  style: TextStyle(
+                    color: Theme.of(context).cursorColor,
+                    fontSize: 15,
+                    fontFamily: 'Helvetica',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onLongPress: null,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => AddItemPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.red,
+                ),
+                title: Text(
+                  "Sair da conta",
+                  style: TextStyle(
+                    color: Theme.of(context).cursorColor,
+                    fontSize: 15,
+                    fontFamily: 'Helvetica',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onLongPress: null,
+                onTap: () {
+                  model.signOut(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
