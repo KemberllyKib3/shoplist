@@ -1,16 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Views/NewListPage.dart';
+import 'package:shoplist/Views/ShowListPage.dart';
 
 class HomePage1 extends StatefulWidget {
-  HomePage1({Key key}) : super(key: key);
-
+  final String userID;
+  HomePage1({Key key, @required this.userID}) : super(key: key);
   @override
-  _HomePage1State createState() => _HomePage1State();
+  _HomePage1State createState() => _HomePage1State(this.userID);
 }
 
 class _HomePage1State extends State<HomePage1> {
+  final String userId;
+  _HomePage1State(this.userId);
+
   String _searchLista;
 
   @override
@@ -131,9 +134,13 @@ class _HomePage1State extends State<HomePage1> {
                   ),
                   child: StreamBuilder<QuerySnapshot>(
                     stream: (_searchLista == null || _searchLista.trim() == "")
-                        ? Firestore.instance.collection("listas").snapshots()
+                        ? Firestore.instance
+                            .collection("listas")
+                            .where("dono", isEqualTo: userId)
+                            .snapshots()
                         : Firestore.instance
                             .collection("listas")
+                            .where("dono", isEqualTo: userId)
                             .where("searchListas", arrayContains: _searchLista)
                             .snapshots(),
                     builder: (context, snapshot) {
@@ -151,6 +158,19 @@ class _HomePage1State extends State<HomePage1> {
                               (DocumentSnapshot document) {
                                 return ListTile(
                                   title: Text(document["nomeLista"]),
+                                  onTap: () {
+                                    print(document.documentID.toString());
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ShowListPage(
+                                            listName: document["nomeLista"]
+                                                .toString(),
+                                            listID:
+                                                document.documentID.toString(),
+                                          ),
+                                        ));
+                                  },
                                 );
                               },
                             ).toList(),

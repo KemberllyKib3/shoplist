@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
-import 'package:shoplist/Views/SearchItemPage.dart';
 import 'package:shoplist/Views/AddItemPage.dart';
 
 class HomePage extends StatelessWidget {
@@ -33,15 +32,15 @@ class HomePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  RaisedButton(
+                  /*RaisedButton(
                     child: Text("Buscador de item"),
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SearchItemPage(),
-                      ),
+                          builder: (context) => SearchItemPage(),
+                          ),
                     ),
-                  ),
+                  ),*/
                   RaisedButton(
                     child: Text("Criar um item"),
                     onPressed: () => Navigator.push(
