@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
 import 'package:shoplist/Views/SignInPage.dart';
+import 'package:shoplist/custom_icons_icons.dart';
+import 'package:shoplist/utils/Loading.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -22,22 +23,34 @@ class _SignUpPageState extends State<SignUpPage> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 35,
+              color: Theme.of(context).cursorColor,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
         body: ScopedModelDescendant<UserModel>(
           builder: (context, child, model) {
             if (model.isloading)
               return Center(
-                child: CircularProgressIndicator(),
+                child: Loading(),
               );
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Container(
-                  height: 150,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Icon(
-                        Icons.store,
+                        CustomIcons.shop,
                         size: 100,
                         color: Theme.of(context).primaryColor,
                       )
@@ -60,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 20,
-                                  fontFamily: 'Open Sans',
+                                  fontFamily: 'Helvetica',
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -73,16 +86,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                     hintStyle: TextStyle(
                                       color: Colors.black26,
                                       fontSize: 20,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                   ),
-                                  // validator: (val) => val.isEmpty
-                                  //     ? 'Digite um nome válido.'
-                                  //     : null,
-
                                   validator: (val) {
                                     if (val.isEmpty) {
                                       return "Este campo não pode ser vazio.";
@@ -90,7 +99,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                       return null;
                                     }
                                   },
-
                                   onChanged: (val) {
                                     setState(() => _firstName = val);
                                   },
@@ -99,13 +107,14 @@ class _SignUpPageState extends State<SignUpPage> {
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
                                 child: TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
                                     fillColor: Colors.black12,
                                     hintText: "Email",
                                     hintStyle: TextStyle(
                                       color: Colors.black26,
                                       fontSize: 20,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
@@ -151,7 +160,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     hintStyle: TextStyle(
                                       color: Colors.black26,
                                       fontSize: 20,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                     ),
                                   ),
                                   validator: (val) => val.length < 8
@@ -171,7 +180,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     "CADASTRAR",
                                     style: TextStyle(
                                       fontSize: 20,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -183,16 +192,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                   onPressed: () {
                                     if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
-
                                       Map<String, dynamic> userData = {
-
                                         "nome": _firstName,
                                         "email": _email,
                                         "cargo": "user",
                                       };
                                       model.signUp(
                                         userData: userData,
-
                                         pass: _password,
                                         onSuccess: _onSuccess,
                                         onFail: _onFail,
@@ -236,7 +242,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         "Cadastrar com google",
                                         style: TextStyle(
                                           fontSize: 20,
-                                          fontFamily: 'Open Sans',
+                                          fontFamily: 'Helvetica',
                                         ),
                                       ),
                                     ],
@@ -257,7 +263,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     "Já possui conta?",
                                     style: TextStyle(
                                       fontSize: 14,
-                                      fontFamily: 'Open Sans',
+                                      fontFamily: 'Helvetica',
                                     ),
                                   ),
                                   FlatButton(
@@ -272,7 +278,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       "Faça Login",
                                       style: TextStyle(
                                         fontSize: 14,
-                                        fontFamily: 'Open Sans',
+                                        fontFamily: 'Helvetica',
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
