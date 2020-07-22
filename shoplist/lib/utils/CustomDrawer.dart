@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
@@ -72,10 +73,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ),
                 onLongPress: null,
-                onTap: () {
+                onTap: () async {
+                  FirebaseUser _firebaseUser =
+                      await FirebaseAuth.instance.currentUser();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) =>
+                          HomePage(userID: _firebaseUser.uid.toString()),
                     ),
                   );
                 },

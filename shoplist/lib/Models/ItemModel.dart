@@ -43,8 +43,6 @@ class ItemModel extends Model {
     return indexList;
   }
 
-  
-
   // ATUALIZA O ITEM SE FOR FEITA ALGUMA ALTERAÇÃO
   void updateItem() {
     isloading = true;

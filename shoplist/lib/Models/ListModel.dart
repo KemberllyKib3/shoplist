@@ -38,6 +38,28 @@ class ListModel extends Model {
     }
   }
 
+  //Excluir lista
+  void excluirLista(String listID) {
+    try {
+      Firestore.instance.collection("listas").document(listID).delete();
+      Firestore.instance
+          .collection("listas")
+          .document(listID)
+          .collection("itens");
+    } catch (e) {}
+  }
+
+  void removerItemDaLista(String listID, String itemID) {
+    try {
+      Firestore.instance
+          .collection("listas")
+          .document(listID)
+          .collection("itens")
+          .document(itemID)
+          .delete();
+    } catch (e) {}
+  }
+
   // CARREGAR LISTAS DA NUVEM E SALVAR NO LOCAL
   Future<List<QuerySnapshot>> carregarListas() async {
     isloading = true;
