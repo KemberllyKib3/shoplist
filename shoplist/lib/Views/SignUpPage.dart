@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
+import 'package:shoplist/Views/HomePage.dart';
 import 'package:shoplist/Views/SignInPage.dart';
 import 'package:shoplist/custom_icons_icons.dart';
 import 'package:shoplist/utils/Loading.dart';
@@ -53,14 +55,39 @@ class _SignUpPageState extends State<SignUpPage> {
                         CustomIcons.shop,
                         size: 100,
                         color: Theme.of(context).primaryColor,
-                      )
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "Shop",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 30,
+                              fontFamily: 'Helvetica',
+                            ),
+                          ),
+                          Text(
+                            "List",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 30,
+                              fontFamily: 'Helvetica',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                    decoration: BoxDecoration(),
+                    color: Colors.white,
                     child: ListView(
                       children: <Widget>[
                         Form(
@@ -68,14 +95,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              Text(
-                                "Olá! Cadastre-se para\ncontinuar.",
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 20,
-                                  fontFamily: 'Helvetica',
+                              Container(
+                                margin: EdgeInsets.only(top: 5),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Olá! Faça seu cadastro para acessar",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    color: Theme.of(context).cursorColor,
+                                    fontSize: 15,
+                                    fontFamily: 'Helvetica',
+                                  ),
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
@@ -120,10 +151,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                   ),
-                                  // validator: (val) => val.isEmpty
-                                  //     ? 'Este campo não pode ser vazio.'
-                                  //     : null,
-
                                   validator: (val) {
                                     if (val.isEmpty) {
                                       return "Este campo não pode ser vazio.";
@@ -207,7 +234,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                   },
                                 ),
                               ),
-
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -224,11 +250,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ],
                               ),
-
-                              // Divider(
-                              //   height: 10,
-                              //   color: Colors.black87,
-                              // ),
                               Padding(
                                 padding: EdgeInsets.only(top: 15),
                                 child: MaterialButton(
@@ -237,9 +258,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      // Icon(Icons.group_work),
                                       Text(
-                                        "Cadastrar com google",
+                                        "Cadastrar com Google",
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Helvetica',
@@ -253,7 +273,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     side: BorderSide(color: Colors.black87),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: _disponibility,
                                 ),
                               ),
                               Row(
@@ -262,7 +282,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   Text(
                                     "Já possui conta?",
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 15,
                                       fontFamily: 'Helvetica',
                                     ),
                                   ),
@@ -277,7 +297,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     child: Text(
                                       "Faça Login",
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 15,
                                         fontFamily: 'Helvetica',
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -301,14 +321,49 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _onSuccess() {
-    Navigator.of(context).pop();
+  Future<void> _onSuccess() async {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text("Usuário criado!"),
+        backgroundColor: Colors.lightGreen,
+        duration: Duration(seconds: 2),
+      ),
+    );
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => HomePage(
+          userID: user.uid.toString(),
+        ),
+      ),
+    );
   }
+  // void _onSuccess() {
+  //   _scaffoldKey.currentState.showSnackBar(
+  //     SnackBar(
+  //       content: Text("Usuário criado!"),
+  //       backgroundColor: Colors.lightGreen,
+  //       duration: Duration(seconds: 2),
+  //     ),
+  //   );
+  //   Navigator.of(context).pop();
+  // }
 
   void _onFail() {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
         content: Text("Falha ao criar sua conta!"),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _disponibility() {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text("Não disponível nesta versão"),
         backgroundColor: Colors.redAccent,
         duration: Duration(seconds: 2),
       ),

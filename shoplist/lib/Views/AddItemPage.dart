@@ -17,10 +17,12 @@ class _AddItemPageState extends State<AddItemPage> {
   String _nomeItem;
 
   final _formKey = new GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -208,7 +210,11 @@ class _AddItemPageState extends State<AddItemPage> {
                             "unidadeMedida": _unidadeMedida,
                             "searchItens": model.setSearchParam(_nomeItem),
                           };
-                          model.createItem(itemData);
+                          model.createItem( 
+                            itemData: itemData,
+                            onSuccess: _onSuccess,
+                            onFail: _onFail,
+                          );
                           setState(() {
                             _unidadeMedida = "";
                             _categoria = "";
@@ -223,6 +229,26 @@ class _AddItemPageState extends State<AddItemPage> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  void _onSuccess() {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text("Item criado!"),
+        backgroundColor: Colors.lightGreen,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _onFail() {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text("Este item já existe!"),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
       ),
     );
   }

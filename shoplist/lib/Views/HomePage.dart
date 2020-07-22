@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
 import 'package:shoplist/Views/NewListPage.dart';
 import 'package:shoplist/Views/UserPage.dart';
-import 'package:shoplist/Views/ShowListPage.dart';
+import 'package:shoplist/Views/ListPage.dart';
 import 'package:shoplist/custom_icons_icons.dart';
 import 'package:shoplist/utils/CustomDrawer.dart';
 import 'package:shoplist/utils/Loading.dart';
@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
                 size: 35,
                 color: Theme.of(context).cursorColor,
               ),
+              tooltip: "Página do Usuário",
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
             );
           },
         ),
-        drawer: CustomDrawer(),
+        drawer: CustomDrawer(userID: userId),
         body: ScopedModelDescendant<UserModel>(
           builder: (context, child, model) {
             if (model.isloading) {
@@ -118,17 +119,13 @@ class _HomePageState extends State<HomePage> {
                   height: 80,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
                   ),
-                  child: Form(
-                    child: Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 10),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: Form(
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
                             child: TextFormField(
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.search),
@@ -148,16 +145,16 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),
                           ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.filter_list,
-                            size: 35,
+                          IconButton(
+                            icon: Icon(
+                              Icons.filter_list,
+                              size: 35,
+                            ),
+                            tooltip: "Filtros",
+                            onPressed: () {},
                           ),
-                          tooltip: "Filtros",
-                          onPressed: () {},
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -165,7 +162,6 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
-                      // color: Colors.black.withOpacity(0.05),
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
@@ -178,24 +174,58 @@ class _HomePageState extends State<HomePage> {
                               ? Firestore.instance
                                   .collection("listas")
                                   .where("dono", isEqualTo: userId)
+                                  .orderBy("data", descending: true)
                                   .snapshots()
                               : Firestore.instance
                                   .collection("listas")
                                   .where("dono", isEqualTo: userId)
                                   .where("searchListas",
                                       arrayContains: _searchLista)
+                                  .orderBy("data", descending: true)
                                   .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasError)
                           return Text("Erro: ${snapshot.error}");
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
-                            return Center(
-                              child: CircularProgressIndicator(),
+                            return ListTile(
+                              title: Text(
+                                "Você ainda não possui nenhuma lista.",
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 20,
+                                  fontFamily: 'Helvetica',
+                                ),
+                              ),
+                              subtitle: Text(
+                                "Clique ao lado para adicionar.",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .accentColor
+                                      .withOpacity(0.7),
+                                  fontSize: 15,
+                                  fontFamily: 'Helvetica',
+                                ),
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(
+                                  Icons.add_circle,
+                                  size: 35,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => NewListPage(),
+                                    ),
+                                  );
+                                },
+                              ),
                             );
 
                           default:
                             return ListView(
+                              padding: EdgeInsets.only(bottom: 10),
                               children: snapshot.data.documents.map(
                                 (DocumentSnapshot document) {
                                   return Card(
@@ -227,16 +257,15 @@ class _HomePageState extends State<HomePage> {
                                           color: Theme.of(context)
                                               .accentColor
                                               .withOpacity(0.7),
-                                          fontSize: 14,
+                                          fontSize: 15,
                                           fontFamily: 'Helvetica',
                                         ),
                                       ),
                                       onTap: () {
-                                        print(document.documentID.toString());
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => ShowListPage(
+                                            builder: (context) => ListPage(
                                               listName: document["nomeLista"]
                                                   .toString(),
                                               listID: document.documentID

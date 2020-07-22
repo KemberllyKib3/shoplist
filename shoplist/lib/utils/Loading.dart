@@ -9,13 +9,11 @@ class Loading extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        CircularProgressIndicator(
-          backgroundColor: Theme.of(context).primaryColor,
-        ),
+        CircularProgressIndicator(),
         Padding(
           padding: EdgeInsets.only(top: 10),
           child: Text(
-            "Carregando...",
+            "Carregando",
             style: TextStyle(
               color: Theme.of(context).cursorColor,
               fontSize: 20,
