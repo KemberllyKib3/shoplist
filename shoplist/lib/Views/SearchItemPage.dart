@@ -58,7 +58,6 @@ class _SearchItemPageState extends State<SearchItemPage> {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
-
                       default:
                         return ListView(
                           children: snapshot.data.documents.map(
@@ -66,12 +65,26 @@ class _SearchItemPageState extends State<SearchItemPage> {
                               return ListTile(
                                 title: Text(document["nomeItem"]),
                                 leading: Icon(Icons.add),
-                                onTap: () {
-                                  Firestore.instance
+                                onTap: () async {
+                                  QuerySnapshot teste = await Firestore.instance
                                       .collection("listas")
                                       .document(this.listID)
                                       .collection("itens")
-                                      .add(document.data);
+                                      .where("nomeItem",
+                                          isEqualTo:
+                                              document["nomeItem"].toString())
+                                      .getDocuments();
+                                  if (teste.documents.isEmpty) {
+                                    Firestore.instance
+                                        .collection("listas")
+                                        .document(this.listID)
+                                        .collection("itens")
+                                        .add(document.data);
+                                    print("adicionadoh");
+                                  } else {
+                                    print(document["nomeItem"].toString() +
+                                        " já está na sua lista!");
+                                  }
                                 },
                               );
                             },
