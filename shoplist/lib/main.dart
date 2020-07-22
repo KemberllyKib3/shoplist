@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/ItemModel.dart';
 import 'package:shoplist/Models/ListModel.dart';
 import 'package:shoplist/Models/UserModel.dart';
-import 'package:shoplist/Views/SignInPage.dart';
+import 'package:shoplist/Views/SplashScreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,8 +31,8 @@ class MyApp extends StatelessWidget {
                           Color.fromRGBO(174, 58, 255, 1), // Lilas de Kibe
                       cursorColor: Colors.black87,
                     ),
-                    home: SignInPage(),
-                    // home: AdminHome(),
+                    // home: SignInPage(),
+                    home: SplashScreen(),
                   ),
                 );
               },

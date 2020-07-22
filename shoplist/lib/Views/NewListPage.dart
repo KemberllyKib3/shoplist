@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/ListModel.dart';
-import 'package:shoplist/Views/ShowListPage.dart';
+import 'package:shoplist/Views/ListPage.dart';
 
 class NewListPage extends StatefulWidget {
   NewListPage({Key key}) : super(key: key);
@@ -13,14 +13,35 @@ class NewListPage extends StatefulWidget {
 
 class _NewListPageState extends State<NewListPage> {
   final _formKey = new GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   String _nomeLista, _descLista;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text("Criar nova lista"),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Text(
+            "Criar nova lista",
+            style: TextStyle(
+              color: Theme.of(context).cursorColor,
+              fontSize: 25,
+              fontFamily: 'Helvetica',
+            ),
+          ),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 35,
+              color: Theme.of(context).cursorColor,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
         body: ScopedModelDescendant<ListModel>(
           builder: (context, child, model) {
@@ -30,21 +51,19 @@ class _NewListPageState extends State<NewListPage> {
               );
             }
             return Padding(
-              padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: Form(
                 key: _formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Crie sua lista personalizada\nColocando os dados abaixo",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 20,
-                          fontFamily: 'Open Sans',
-                        ),
+                    Text(
+                      "É fácil criar uma nova lista, preencha os campos abaixo e aperte em criar.",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Theme.of(context).cursorColor,
+                        fontSize: 15,
+                        fontFamily: 'Helvetica',
                       ),
                     ),
                     Padding(
@@ -56,7 +75,7 @@ class _NewListPageState extends State<NewListPage> {
                           hintStyle: TextStyle(
                             color: Colors.black26,
                             fontSize: 20,
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Helvetica',
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
@@ -81,7 +100,7 @@ class _NewListPageState extends State<NewListPage> {
                           hintStyle: TextStyle(
                             color: Colors.black26,
                             fontSize: 20,
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Helvetica',
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
@@ -96,15 +115,15 @@ class _NewListPageState extends State<NewListPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 0),
                       child: MaterialButton(
                         elevation: 3,
                         color: Theme.of(context).primaryColor,
                         child: Text(
-                          "Salvar Lista",
+                          "CRIAR LISTA",
                           style: TextStyle(
                             fontSize: 20,
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Helvetica',
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -130,10 +149,11 @@ class _NewListPageState extends State<NewListPage> {
                               _onSuccess,
                               _onFail,
                             );
-                            setState(() {
-                              //_nomeLista = "";
-                              //_descLista = "";
-                            });
+                            // setState(
+                            //   () {
+                            //     //_nomeLista = "";
+                            //     //_descLista = "";
+                            //   });
                           }
                         },
                       ),
@@ -150,9 +170,16 @@ class _NewListPageState extends State<NewListPage> {
 
   // ignore: invalid_required_positional_param
   dynamic _onSuccess(@required String id) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text("Lista criada, aguarde..."),
+        backgroundColor: Colors.lightGreen,
+        duration: Duration(seconds: 2),
+      ),
+    );
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => ShowListPage(
+        builder: (context) => ListPage(
           listName: _nomeLista,
           listID: id,
         ),
@@ -161,12 +188,12 @@ class _NewListPageState extends State<NewListPage> {
   }
 
   void _onFail() {
-    //_scaffoldKey.currentState.showSnackBar(
-    //   SnackBar(
-    //     content: Text("Falha ao salvar lista!"),
-    //     backgroundColor: Colors.redAccent,
-    //     duration: Duration(seconds: 2),
-    //   ),
-    // );
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text("Falha ao salvar lista!"),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 }

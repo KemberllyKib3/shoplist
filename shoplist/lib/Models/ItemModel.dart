@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ItemModel extends Model {
@@ -10,23 +10,35 @@ class ItemModel extends Model {
   Map<String, dynamic> itemData = Map();
 
   // CRIAR UM NOVO ITEM
-  void createItem(Map<String, dynamic> itemData) {
-    // if (existeItem(itemData["nomeItem"])) {
-    //   updateItem();
-    // } else {
-    //   Firestore.instance.collection("itens").add(itemData);
-    // }
-    Firestore.instance.collection("itens").add(itemData);
-    notifyListeners();
+  void createItem(
+      {@required Map<String, dynamic> itemData,
+      @required VoidCallback onSuccess,
+      @required VoidCallback onFail}) {
+    try {
+      Firestore.instance.collection("itens").add(itemData);
+      onSuccess();
+      notifyListeners();
+    } catch (e) {
+      onFail();
+      notifyListeners();
+    }
   }
 
-  bool existeItem(String nome) {
-    if (Firestore.instance
-            .collection("itens")
-            .where("nomeItem".toLowerCase(), isEqualTo: nome.toLowerCase())
-            .getDocuments() !=
-        null) return true;
-    return false;
+  bool existeItemnNoBd(String nome) {
+    // Future<QuerySnapshot> result;
+    QuerySnapshot result;
+
+    result = Firestore.instance
+        .collection('itens')
+        .where('nomeItem'.toLowerCase(), isEqualTo: nome.toLowerCase())
+        .limit(1)
+        .getDocuments()
+        .then((value) => result = value)
+        .catchError((e) {
+      result = null;
+    }) as QuerySnapshot;
+
+    return (result == null) ? false : true;
   }
 
   setSearchParam(String nome) {
@@ -38,8 +50,6 @@ class ItemModel extends Model {
         indexList.add(splitList[i].substring(0, j).toLowerCase());
       }
     }
-    print(indexList);
-
     return indexList;
   }
 
