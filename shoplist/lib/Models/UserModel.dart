@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Views/SignInPage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 // class User {
 //   final String uid;
@@ -21,6 +22,22 @@ class UserModel extends Model {
 
   // PARA CRIAR A TELA DE 'LOADING'
   bool isloading = false; // PARA CRIAR A TELA DE 'LOADING'
+
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
+  void entrarGoogle(
+      {@required VoidCallback onSuccess, @required VoidCallback onFail}) async {
+    try {
+      await _googleSignIn.signIn();
+      onSuccess();
+      isloading = false;
+      notifyListeners();
+    } catch (err) {
+      onFail();
+      isloading = false;
+      notifyListeners();
+    }
+  }
 
   // CRIAR UMA CONTA
   void signUp(
@@ -50,6 +67,29 @@ class UserModel extends Model {
     });
   }
 
+  Future<Null> updateUserData(
+      {@required Map<String, dynamic> userData,
+      @required VoidCallback onSuccess,
+      @required VoidCallback onFail}) async {
+    isloading = true;
+    notifyListeners();
+    try {
+      await Firestore.instance
+          .collection("users")
+          .document(firebaseUser.uid)
+          .updateData(userData);
+      firebaseUser.updateEmail(userData["email"]);
+
+      onSuccess();
+      isloading = false;
+      notifyListeners();
+    } catch (e) {
+      onFail();
+      isloading = false;
+      notifyListeners();
+    }
+  }
+
   // LOGAR QUANDO JA TEM CONTA
   void signIn(
       {@required String email,
@@ -59,24 +99,20 @@ class UserModel extends Model {
     isloading = true;
     notifyListeners();
 
-    try {
-      _auth
-          .signInWithEmailAndPassword(email: email, password: pass)
-          .then((user) async {
-        firebaseUser = user.user;
-        print(firebaseUser.uid.toString());
-        await _loadCurrentUser();
-
-        onSuccess();
-        // nome = userData["nome"].toString().split(" ")[0];
-        isloading = false;
-        notifyListeners();
-      });
-    } catch (e) {
+    _auth
+        .signInWithEmailAndPassword(email: email, password: pass)
+        .then((value) async {
+      firebaseUser = value.user;
+      await _loadCurrentUser();
+      onSuccess();
+      isloading = false;
+      notifyListeners();
+    }).catchError((e) {
+      print(e);
       onFail();
       isloading = false;
       notifyListeners();
-    }
+    });
   }
 
   // SAIR DA CONTA

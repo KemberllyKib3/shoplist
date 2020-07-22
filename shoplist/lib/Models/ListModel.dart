@@ -45,12 +45,6 @@ class ListModel extends Model {
     return Firestore.instance.collection("listas").snapshots().toList();
   }
 
-  // // CARREGAR LISTAS DO BD LOCAL
-  // void carregarLocalListas() {
-  //   isloading = true;
-  //   notifyListeners();
-  // }
-
   setSearchParam(String nome) {
     List<String> splitList = nome.split(" ");
     List<String> indexList = [];
@@ -63,18 +57,17 @@ class ListModel extends Model {
     print(indexList);
     return indexList;
   }
-  // {"searchListas": setSearchParam(_nomeLista)}
 
   // ATUALIZA AS MUDANCAS NA LISTA E JOGA NO BD LOCAL
-  void atualizarListas() {
-    isloading = true;
-    notifyListeners();
-  }
+  // void atualizarListas() {
+  //   isloading = true;
+  //   notifyListeners();
+  // }
 
-  // VERIFICA SE TEM LISTA NO LOCAL DIFERENTE DA NUVEM
-  bool verifyUpdate() {
-    isloading = true;
-    notifyListeners();
-    return true;
-  }
+  // // VERIFICA SE TEM LISTA NO LOCAL DIFERENTE DA NUVEM
+  // bool verifyUpdate() {
+  //   isloading = true;
+  //   notifyListeners();
+  //   return true;
+  // }
 }

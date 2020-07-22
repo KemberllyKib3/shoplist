@@ -2,40 +2,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/ItemModel.dart';
+import 'package:shoplist/Views/SearchItemPage.dart';
 import 'package:shoplist/custom_icons_icons.dart';
-import 'package:shoplist/utils/Loading.dart';
 
-class SearchItemPage extends StatefulWidget {
+class ListPage extends StatefulWidget {
+  final String listName;
   final String listID;
-  SearchItemPage({Key key, @required this.listID}) : super(key: key);
+  ListPage({Key key, @required this.listName, @required this.listID})
+      : super(key: key);
   @override
-  _SearchItemPageState createState() =>
-      _SearchItemPageState(listID: this.listID);
+  _ListPageState createState() =>
+      _ListPageState(listName: this.listName, listID: this.listID);
 }
 
-class _SearchItemPageState extends State<SearchItemPage> {
+class _ListPageState extends State<ListPage> {
+  final String listName;
   final String listID;
-  _SearchItemPageState({@required this.listID});
+  _ListPageState({@required this.listName, @required this.listID});
   String searchString = "";
-
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
-          "Adicionar item à lista",
-          style: TextStyle(
-            color: Theme.of(context).cursorColor,
-            fontSize: 25,
-            fontFamily: 'Helvetica',
-          ),
-        ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -44,12 +36,21 @@ class _SearchItemPageState extends State<SearchItemPage> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        title: Text(
+          this.listName,
+          style: TextStyle(
+            color: Theme.of(context).cursorColor,
+            fontSize: 25,
+            fontFamily: 'Helvetica',
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
       body: ScopedModelDescendant<ItemModel>(
         builder: (context, child, model) {
           if (model.isloading)
             return Center(
-              child: Loading(),
+              child: CircularProgressIndicator(),
             );
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -61,35 +62,70 @@ class _SearchItemPageState extends State<SearchItemPage> {
                 child: Row(
                   children: <Widget>[
                     Flexible(
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search),
-                          fillColor: Colors.black12,
-                          hintText: "Pesquise itens",
-                          hintStyle: TextStyle(
-                            color: Colors.black26,
-                            fontSize: 20,
-                            fontFamily: 'Helvetica',
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            fillColor: Colors.black12,
+                            hintText: "Pesquise itens",
+                            hintStyle: TextStyle(
+                              color: Colors.black26,
+                              fontSize: 20,
+                              fontFamily: 'Helvetica',
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                           ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                          onChanged: (val) {
+                            setState(() {
+                              searchString = val.toLowerCase();
+                            });
+                          },
                         ),
-                        onChanged: (val) {
-                          setState(() {
-                            searchString = val.toLowerCase();
-                          });
-                        },
                       ),
                     ),
+                    MaterialButton(
+                      elevation: 3,
+                      color: Theme.of(context).primaryColor,
+                      child: Text(
+                        "+Itens",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'Open Sans',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      height: 50,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                SearchItemPage(listID: this.listID),
+                          ),
+                        );
+                      },
+                    )
                   ],
                 ),
               ),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: (searchString == null || searchString.trim() == "")
-                      ? Firestore.instance.collection("itens").snapshots()
+                      ? Firestore.instance
+                          .collection("listas")
+                          .document(this.listID)
+                          .collection("itens")
+                          .snapshots()
                       : Firestore.instance
+                          .collection("listas")
+                          .document(this.listID)
                           .collection("itens")
                           .where("searchItens", arrayContains: searchString)
                           .snapshots(),
@@ -144,18 +180,7 @@ class _SearchItemPageState extends State<SearchItemPage> {
                                                           .primaryColor,
                                                     )
                                                   : null,
-                                  onTap: () {
-                                    try {
-                                      Firestore.instance
-                                          .collection("listas")
-                                          .document(this.listID)
-                                          .collection("itens")
-                                          .add(document.data);
-                                      _onSuccess();
-                                    } catch (e) {
-                                      _onFail();
-                                    }
-                                  },
+                                  onTap: () {},
                                 ),
                               );
                             },
@@ -168,26 +193,6 @@ class _SearchItemPageState extends State<SearchItemPage> {
             ],
           );
         },
-      ),
-    );
-  }
-
-  void _onSuccess() {
-    _scaffoldKey.currentState.showSnackBar(
-      SnackBar(
-        content: Text("Item adicionado!"),
-        backgroundColor: Colors.lightGreen,
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
-
-  void _onFail() {
-    _scaffoldKey.currentState.showSnackBar(
-      SnackBar(
-        content: Text("Não foi possível adicionar este item!"),
-        backgroundColor: Colors.redAccent,
-        duration: Duration(seconds: 2),
       ),
     );
   }

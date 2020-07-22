@@ -3,17 +3,22 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shoplist/Models/UserModel.dart';
 import 'package:shoplist/Views/AddItemPage.dart';
 import 'package:shoplist/Views/HomePage.dart';
-import 'package:shoplist/Views/RecipePage.dart';
+import 'package:shoplist/Views/HomeRecipePage.dart';
 import 'package:shoplist/custom_icons_icons.dart';
 
 class CustomDrawer extends StatefulWidget {
-  CustomDrawer({Key key}) : super(key: key);
+  final String userID;
+  CustomDrawer({Key key, this.userID}) : super(key: key);
+
 
   @override
-  _CustomDrawerState createState() => _CustomDrawerState();
+  _CustomDrawerState createState() => _CustomDrawerState(userID);
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  final String userId;
+  _CustomDrawerState(this.userId);
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<UserModel>(
@@ -75,7 +80,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) => HomePage(userID: userId,),
                     ),
                   );
                 },
@@ -99,7 +104,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => RecipePage(),
+                      builder: (context) => HomeRecipePage(), 
                     ),
                   );
                 },

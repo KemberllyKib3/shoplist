@@ -38,13 +38,39 @@ class _SignInPageState extends State<SignInPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Container(
+                  padding: EdgeInsets.zero,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    // mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Icon(
                         CustomIcons.shop,
                         size: 100,
                         color: Theme.of(context).primaryColor,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "Shop",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 30,
+                              fontFamily: 'Helvetica',
+                            ),
+                          ),
+                          Text(
+                            "List",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 30,
+                              fontFamily: 'Helvetica',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -60,14 +86,18 @@ class _SignInPageState extends State<SignInPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              Text(
-                                "Olá! Faça login para\ncontinuar.",
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 20,
-                                  fontFamily: 'Helvetica',
+                              Container(
+                                margin: EdgeInsets.only(top: 5),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Olá! Faça login para continuar",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    color: Theme.of(context).cursorColor,
+                                    fontSize: 14,
+                                    fontFamily: 'Helvetica',
+                                  ),
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
@@ -207,7 +237,7 @@ class _SignInPageState extends State<SignInPage> {
                                     children: <Widget>[
                                       // Icon(Icons.group_work),
                                       Text(
-                                        "Entrar com google",
+                                        "Entrar com Google",
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Helvetica',
@@ -221,7 +251,7 @@ class _SignInPageState extends State<SignInPage> {
                                     side: BorderSide(color: Colors.black87),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: _disponibility,
                                 ),
                               ),
                               Padding(
@@ -235,7 +265,7 @@ class _SignInPageState extends State<SignInPage> {
                                     children: <Widget>[
                                       // Icon(Icons.visibility_off),
                                       Text(
-                                        "Entrar como visitante",
+                                        "Entrar como Visitante",
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Helvetica',
@@ -249,7 +279,7 @@ class _SignInPageState extends State<SignInPage> {
                                     side: BorderSide(color: Colors.black87),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: _disponibility,
                                 ),
                               ),
                               Row(
@@ -313,6 +343,16 @@ class _SignInPageState extends State<SignInPage> {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
         content: Text("Falha ao entrar!"),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _disponibility() {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text("Não disponível nesta versão"),
         backgroundColor: Colors.redAccent,
         duration: Duration(seconds: 2),
       ),
