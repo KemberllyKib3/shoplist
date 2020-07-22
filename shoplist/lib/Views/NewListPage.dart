@@ -162,8 +162,8 @@ class _NewListPageState extends State<NewListPage> {
       ),
     );
   }
-  
-  dynamic _onSuccess(@required String id) {
+
+  dynamic _onSuccess(String id) {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
         content: Text("Lista criada, aguarde..."),

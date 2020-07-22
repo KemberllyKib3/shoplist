@@ -16,17 +16,14 @@ class ListModel extends Model {
     isloading = true;
     notifyListeners();
     try {
-      Firestore.instance
-          .collection("listas")
-          .add(listData)
-          .then((docRef) => {
-                onSuccess(docRef.documentID.toString()),
-                Firestore.instance
-                    .collection("listas")
-                    .document(docRef.documentID)
-                    .collection("itens")
-                    .buildArguments(),
-              });
+      Firestore.instance.collection("listas").add(listData).then((docRef) {
+        onSuccess(docRef.documentID.toString());
+        Firestore.instance
+            .collection("listas")
+            .document(docRef.documentID)
+            .collection("itens")
+            .buildArguments();
+      });
 
       isloading = false;
       notifyListeners();
