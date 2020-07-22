@@ -41,17 +41,13 @@ class _SplashScreenState extends State<SplashScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     CircleAvatar(
-                      radius: 61,
-                      backgroundColor: Theme.of(context).cursorColor,
-                      child: CircleAvatar(
-                        radius: 60,
-                        child: Icon(
-                          CustomIcons.shop,
-                          size: 75,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        backgroundColor: Colors.white,
+                      radius: 60,
+                      child: Icon(
+                        CustomIcons.shop,
+                        size: 75,
+                        color: Theme.of(context).primaryColor,
                       ),
+                      backgroundColor: Colors.white.withOpacity(0.9),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 5),

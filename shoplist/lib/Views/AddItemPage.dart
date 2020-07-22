@@ -210,7 +210,7 @@ class _AddItemPageState extends State<AddItemPage> {
                             "unidadeMedida": _unidadeMedida,
                             "searchItens": model.setSearchParam(_nomeItem),
                           };
-                          model.createItem(
+                          model.createItem( 
                             itemData: itemData,
                             onSuccess: _onSuccess,
                             onFail: _onFail,
@@ -246,7 +246,7 @@ class _AddItemPageState extends State<AddItemPage> {
   void _onFail() {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
-        content: Text("Falha ao criar este item!"),
+        content: Text("Este item já existe!"),
         backgroundColor: Colors.redAccent,
         duration: Duration(seconds: 2),
       ),

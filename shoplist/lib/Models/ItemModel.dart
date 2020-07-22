@@ -13,12 +13,18 @@ class ItemModel extends Model {
   void createItem(
       {@required Map<String, dynamic> itemData,
       @required VoidCallback onSuccess,
-      @required VoidCallback onFail}) {
-    try {
+      @required VoidCallback onFail}) async {
+
+    QuerySnapshot teste = await Firestore.instance
+        .collection("itens")
+        .where("nomeItem".toLowerCase(), isEqualTo: itemData["nomeItem"].toString().toLowerCase())
+        .getDocuments();
+
+    if (teste.documents.isEmpty) {
       Firestore.instance.collection("itens").add(itemData);
       onSuccess();
       notifyListeners();
-    } catch (e) {
+    } else {
       onFail();
       notifyListeners();
     }
