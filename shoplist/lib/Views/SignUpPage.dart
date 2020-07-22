@@ -258,7 +258,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      // Icon(Icons.group_work),
                                       Text(
                                         "Cadastrar com Google",
                                         style: TextStyle(

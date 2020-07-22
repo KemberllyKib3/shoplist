@@ -144,7 +144,6 @@ class UserModel extends Model {
   }
 
   Future<Null> _loadCurrentUser() async {
-    // if (firebaseUser != null) firebaseUser = await _auth.currentUser();
     if (firebaseUser != null) {
       firebaseUser = await _auth.currentUser();
       if (userData["nome"] == null) {

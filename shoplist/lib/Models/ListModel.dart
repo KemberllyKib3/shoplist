@@ -19,7 +19,6 @@ class ListModel extends Model {
       Firestore.instance
           .collection("listas")
           .add(listData)
-          // ignore: sdk_version_set_literal
           .then((docRef) => {
                 onSuccess(docRef.documentID.toString()),
                 Firestore.instance

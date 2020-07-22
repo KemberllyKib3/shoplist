@@ -149,11 +149,6 @@ class _NewListPageState extends State<NewListPage> {
                               _onSuccess,
                               _onFail,
                             );
-                            // setState(
-                            //   () {
-                            //     //_nomeLista = "";
-                            //     //_descLista = "";
-                            //   });
                           }
                         },
                       ),
@@ -167,8 +162,7 @@ class _NewListPageState extends State<NewListPage> {
       ),
     );
   }
-
-  // ignore: invalid_required_positional_param
+  
   dynamic _onSuccess(@required String id) {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(

@@ -15,9 +15,6 @@ class _UserPageState extends State<UserPage> {
   final _formKey = new GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // bool _editEmail = true;
-  // bool _editNome = true;
-
   String _email, _nome = "";
 
   @override
@@ -62,24 +59,17 @@ class _UserPageState extends State<UserPage> {
                           child: Icon(
                             Icons.person,
                             size: 100,
-                            // color: Theme.of(context).primaryColor,
                             color: Theme.of(context).cursorColor,
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextFormField(
-                            // enabled: false,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.person_outline),
                               suffixIcon: IconButton(
                                 icon: Icon(Icons.edit),
                                 onPressed: null,
-                                // onPressed: () {
-                                //   setState(() {
-                                //     _editNome = !_editNome;
-                                //   });
-                                // },
                                 tooltip: "Editar",
                               ),
                               fillColor: Colors.black12,
@@ -106,17 +96,11 @@ class _UserPageState extends State<UserPage> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
                           child: TextFormField(
-                            // enabled: false,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.alternate_email),
                               suffixIcon: IconButton(
                                 icon: Icon(Icons.edit),
                                 onPressed: null,
-                                // onPressed: () {
-                                //   setState(() {
-                                //     _editEmail = !_editEmail;
-                                //   });
-                                // },
                                 tooltip: "Editar",
                               ),
                               fillColor: Colors.black12,
@@ -142,7 +126,7 @@ class _UserPageState extends State<UserPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                           child: TextFormField(
-                            // enabled: false,
+                            
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.lock_outline),
                               suffixIcon: IconButton(
@@ -191,20 +175,6 @@ class _UserPageState extends State<UserPage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             onPressed: () {
-                              // if (_formKey.currentState.validate()) {
-                              //   _formKey.currentState.save();
-
-                              //   Map<String, dynamic> userData = {
-                              //     "nome": _editNome,
-                              //     "email": _editEmail,
-                              //     "cargo": "user",
-                              //   };
-                              //   model.updateUserData(
-                              //     userData: userData,
-                              //     onSuccess: _onSuccess,
-                              //     onFail: _onFail,
-                              //   );
-
                               print(_nome);
                               print(_email);
 

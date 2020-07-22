@@ -40,7 +40,6 @@ class _SignInPageState extends State<SignInPage> {
                 Container(
                   padding: EdgeInsets.zero,
                   child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Icon(
                         CustomIcons.shop,
@@ -222,11 +221,6 @@ class _SignInPageState extends State<SignInPage> {
                                   ),
                                 ],
                               ),
-
-                              // Divider(
-                              //   height: 10,
-                              //   color: Colors.black87,
-                              // ),
                               Padding(
                                 padding: EdgeInsets.only(top: 15),
                                 child: MaterialButton(
@@ -235,7 +229,6 @@ class _SignInPageState extends State<SignInPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      // Icon(Icons.group_work),
                                       Text(
                                         "Entrar com Google",
                                         style: TextStyle(
@@ -256,14 +249,12 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
-                                // padding: EdgeInsets.fromLTRB(25, 10, 25, 0),
                                 child: MaterialButton(
                                   elevation: 3,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      // Icon(Icons.visibility_off),
                                       Text(
                                         "Entrar como Visitante",
                                         style: TextStyle(

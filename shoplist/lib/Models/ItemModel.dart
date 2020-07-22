@@ -30,23 +30,6 @@ class ItemModel extends Model {
     }
   }
 
-  bool existeItemnNoBd(String nome) {
-    // Future<QuerySnapshot> result;
-    QuerySnapshot result;
-
-    result = Firestore.instance
-        .collection('itens')
-        .where('nomeItem'.toLowerCase(), isEqualTo: nome.toLowerCase())
-        .limit(1)
-        .getDocuments()
-        .then((value) => result = value)
-        .catchError((e) {
-      result = null;
-    }) as QuerySnapshot;
-
-    return (result == null) ? false : true;
-  }
-
   setSearchParam(String nome) {
     List<String> splitList = nome.split(" ");
     List<String> indexList = [];
@@ -58,13 +41,4 @@ class ItemModel extends Model {
     }
     return indexList;
   }
-
-  // ATUALIZA O ITEM SE FOR FEITA ALGUMA ALTERAÇÃO
-  void updateItem() {
-    isloading = true;
-    notifyListeners();
-  }
-
-  // COLOCAR PREÇO E QUANTIDADE
-  void addPriceQntdItem() {}
 }

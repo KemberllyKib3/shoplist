@@ -39,7 +39,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   height: 60,
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
-                    // color: Colors.blue,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -127,7 +126,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   ListTile(
                     leading: Icon(
-                      // Icons.list,
                       Icons.format_list_bulleted,
                       color: Theme.of(context).cursorColor,
                     ),

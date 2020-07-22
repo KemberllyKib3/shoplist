@@ -58,7 +58,6 @@ class _ListPageState extends State<ListPage> {
             icon: Icon(
               Icons.delete,
               size: 30,
-              // color: Theme.of(context).cursorColor,
               color: Colors.redAccent,
             ),
             tooltip: "Excluir lista",
